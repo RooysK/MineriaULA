@@ -1,0 +1,2803 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cápsula Educativa | Química de los Alimentos – La Humedad</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    /* ------------------------------
+       RESET Y BASE
+    --------------------------------*/
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: radial-gradient(circle at top, #f5f5f5 0, #cfcfcf 40%, #a6a6a6 100%);
+      color: #1f1f1f;
+    }
+
+    body {
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      padding: 1rem;
+      padding-bottom: 5rem;
+    }
+
+    p, li {
+      text-align: justify;
+    }
+
+    a {
+      color: #222;
+    }
+
+    /* ------------------------------
+       GLASSMORPHISM & LAYOUT
+    --------------------------------*/
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      padding: 1.8rem;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+    }
+
+    .section {
+      max-width: 1080px;
+      margin: 1.5rem auto;
+      display: none;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      background: linear-gradient(120deg, rgba(255,255,255,0.85), rgba(230,230,230,0.92));
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 16px;
+      background: linear-gradient(145deg, #e0e0e0, #ffffff);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-logo svg {
+      width: 26px;
+      height: 26px;
+      fill: #555;
+    }
+
+    .brand-title {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #222;
+    }
+
+    .brand-subtitle {
+      font-size: 0.78rem;
+      color: #555;
+    }
+
+    .header-right {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      min-width: 220px;
+    }
+
+    /* ------------------------------
+       PROGRESO
+    --------------------------------*/
+    .progress-container {
+      width: 100%;
+      background: rgba(0,0,0,0.06);
+      border-radius: 999px;
+      overflow: hidden;
+      height: 8px;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #333, #999);
+      transition: width 0.4s ease;
+    }
+
+    .step-indicator {
+      font-size: 0.8rem;
+      color: #333;
+      text-align: right;
+    }
+
+    /* ------------------------------
+       MENÚ FLOTANTE
+    --------------------------------*/
+    #floatingMenu {
+      position: fixed;
+      top: 50%;
+      right: 1rem;
+      transform: translateY(-50%);
+      z-index: 15;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    #floatingMenu.hidden {
+      display: none;
+    }
+
+    .menu-button {
+      background: rgba(255,255,255,0.28);
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.75);
+      padding: 0.45rem 0.75rem;
+      font-size: 0.75rem;
+      cursor: pointer;
+      color: #222;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      text-align: left;
+      white-space: nowrap;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .menu-button:hover,
+    .menu-button:focus-visible {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+      outline: none;
+    }
+
+    .menu-button.current-section {
+      background: #222;
+      color: #f5f5f5;
+    }
+
+    /* ------------------------------
+       BOTÓN CHATBOT Y LIMPIAR
+    --------------------------------*/
+    #chatbotButton {
+      position: fixed;
+      bottom: 1.25rem;
+      right: 1.25rem;
+      z-index: 16;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.75);
+      background: radial-gradient(circle at 30% 0%, #ffffff, #bcbcbc);
+      box-shadow: 0 16px 34px rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    #chatbotButton:hover,
+    #chatbotButton:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      outline: none;
+    }
+
+    #chatbotButton svg {
+      width: 32px;
+      height: 32px;
+      fill: #222;
+    }
+
+    #clearStorageBtn {
+      position: fixed;
+      bottom: 1.25rem;
+      left: 1.25rem;
+      z-index: 16;
+      padding: 0.5rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.7);
+      background: rgba(0,0,0,0.6);
+      color: #f5f5f5;
+      font-size: 0.75rem;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.45);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: background 0.2s ease, transform 0.15s ease;
+    }
+
+    #clearStorageBtn:hover,
+    #clearStorageBtn:focus-visible {
+      background: rgba(0,0,0,0.8);
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    /* ------------------------------
+       UTILIDADES
+    --------------------------------*/
+    .section-title {
+      font-size: 1.6rem;
+      margin-bottom: 0.75rem;
+      color: #111;
+    }
+
+    .section-subtitle {
+      font-size: 0.95rem;
+      color: #555;
+      margin-bottom: 1rem;
+    }
+
+    .muted {
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    .centered {
+      text-align: center;
+    }
+
+    .flex-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .stack-lg {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 1.25rem;
+    }
+
+    .pill {
+      border-radius: 999px;
+      padding: 0.25rem 0.75rem;
+      background: rgba(0,0,0,0.06);
+      font-size: 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      background: rgba(0,0,0,0.08);
+      margin-right: 0.35rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .callout {
+      padding: 0.85rem 1rem;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(0,0,0,0.08);
+      font-size: 0.9rem;
+    }
+
+    .callout-strong {
+      border-left: 4px solid #222;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      background: linear-gradient(135deg,#111,#555);
+      color: #f5f5f5;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.45);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.55);
+      outline: none;
+      background: linear-gradient(135deg,#000,#444);
+    }
+
+    .btn-secondary {
+      background: rgba(0,0,0,0.05);
+      color: #111;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.28);
+    }
+
+    .btn-secondary:hover,
+    .btn-secondary:focus-visible {
+      background: rgba(0,0,0,0.12);
+      box-shadow: 0 9px 18px rgba(0,0,0,0.34);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: #111;
+      border: 1px solid rgba(0,0,0,0.18);
+      box-shadow: none;
+    }
+
+    .btn-ghost:hover,
+    .btn-ghost:focus-visible {
+      background: rgba(0,0,0,0.06);
+      box-shadow: 0 6px 10px rgba(0,0,0,0.22);
+    }
+
+    .btn-small {
+      padding: 0.4rem 0.9rem;
+      font-size: 0.8rem;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1.25rem;
+    }
+
+    .image-frame {
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 18px 34px rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,255,255,0.7);
+      background: #fff;
+    }
+
+    .image-caption {
+      font-size: 0.85rem;
+      color: #444;
+      margin-top: 0.35rem;
+      text-align: center;
+    }
+
+    .infographic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .infographic-card {
+      border-radius: 16px;
+      padding: 1rem;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 14px 26px rgba(0,0,0,0.35);
+    }
+
+    .infographic-card h3 {
+      font-size: 1rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .infographic-icon {
+      width: 32px;
+      height: 32px;
+      margin-bottom: 0.5rem;
+    }
+
+    .pill-row {
+      margin-top: 0.5rem;
+    }
+
+    /* ------------------------------
+       FORMULARIO DE INGRESO
+    --------------------------------*/
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #111;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    input, textarea, select {
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,0.16);
+      padding: 0.55rem 0.9rem;
+      font-size: 0.9rem;
+      background: rgba(255,255,255,0.85);
+      color: #111;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      width: 100%;
+    }
+
+    textarea {
+      border-radius: 14px;
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    input:focus-visible,
+    textarea:focus-visible,
+    select:focus-visible {
+      outline: none;
+      border-color: #111;
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.3);
+      background: #fff;
+    }
+
+    .error {
+      border-color: #b00020 !important;
+      box-shadow: 0 0 0 1px rgba(176,0,32,0.6);
+    }
+
+    .error-message {
+      color: #b00020;
+      font-size: 0.8rem;
+    }
+
+    .success-message {
+      color: #1b5e20;
+      font-size: 0.85rem;
+      margin-top: 0.4rem;
+    }
+
+    /* ------------------------------
+       QUIZ – PREGUNTAS
+    --------------------------------*/
+    .quiz-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .question {
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(0,0,0,0.08);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .question-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .question-tag {
+      font-size: 0.75rem;
+      color: #444;
+    }
+
+    .question-stem {
+      font-size: 0.9rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,0.12);
+      padding: 0.45rem 0.8rem;
+      font-size: 0.88rem;
+      background: rgba(255,255,255,0.9);
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.1s ease, border-color 0.15s ease;
+    }
+
+    .option-btn:hover,
+    .option-btn:focus-visible {
+      outline: none;
+      background: rgba(0,0,0,0.06);
+      border-color: rgba(0,0,0,0.5);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    }
+
+    .option-btn.selected {
+      background: linear-gradient(135deg,#111,#555);
+      color: #f5f5f5;
+      border-color: #111;
+      box-shadow: 0 10px 18px rgba(0,0,0,0.4);
+    }
+
+    .question-footer {
+      font-size: 0.85rem;
+      margin-top: 0.3rem;
+    }
+
+    .feedback {
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+    }
+
+    .feedback.correct {
+      color: #1b5e20;
+    }
+
+    .feedback.incorrect {
+      color: #b00020;
+    }
+
+    /* Verdadero / Falso */
+    .vf-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    /* Drag & Drop */
+    .dragdrop-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 0.75rem;
+      margin-top: 0.4rem;
+    }
+
+    .drag-bank {
+      border-radius: 12px;
+      padding: 0.75rem;
+      background: rgba(255,255,255,0.16);
+      border: 1px dashed rgba(0,0,0,0.2);
+      min-height: 110px;
+    }
+
+    .drag-item {
+      border-radius: 999px;
+      padding: 0.35rem 0.7rem;
+      background: rgba(0,0,0,0.06);
+      font-size: 0.85rem;
+      margin-bottom: 0.35rem;
+      cursor: grab;
+    }
+
+    .dropzone {
+      border-radius: 12px;
+      padding: 0.6rem;
+      background: rgba(255,255,255,0.12);
+      border: 1px dashed rgba(0,0,0,0.25);
+      min-height: 60px;
+      margin-top: 0.25rem;
+    }
+
+    .dropzone.dragover {
+      background: rgba(0,0,0,0.06);
+      border-style: solid;
+    }
+
+    .drop-label {
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    /* Matching con selects */
+    .matching-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.95fr);
+      gap: 0.6rem;
+      align-items: center;
+      margin-bottom: 0.4rem;
+      font-size: 0.9rem;
+    }
+
+    .matching-row select {
+      max-width: 200px;
+    }
+
+    /* Resultados globales */
+    .quiz-summary {
+      margin-top: 1.2rem;
+      padding: 0.8rem 1rem;
+      border-radius: 12px;
+      background: rgba(0,0,0,0.07);
+      font-size: 0.9rem;
+    }
+
+    .quiz-summary strong {
+      font-weight: 700;
+    }
+
+    .quiz-summary.pass {
+      border-left: 4px solid #1b5e20;
+    }
+
+    .quiz-summary.fail {
+      border-left: 4px solid #b00020;
+    }
+
+    /* ------------------------------
+       VIDEO-QUIZ OVERLAY
+    --------------------------------*/
+    .video-wrapper {
+      position: relative;
+      margin-top: 1rem;
+    }
+
+    #learningVideo {
+      width: 100%;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.7);
+      box-shadow: 0 18px 32px rgba(0,0,0,0.45);
+      background: #000;
+    }
+
+    #videoQuizOverlay {
+      position: absolute;
+      inset: 5%;
+      background: rgba(0,0,0,0.82);
+      border-radius: 18px;
+      color: #f5f5f5;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      padding: 1.25rem;
+      box-shadow: 0 18px 34px rgba(0,0,0,0.75);
+    }
+
+    #videoQuizOverlay.active {
+      display: flex;
+    }
+
+    #videoQuizOverlay h3 {
+      margin-bottom: 0.5rem;
+    }
+
+    #videoQuizOverlay p {
+      margin-bottom: 0.75rem;
+      text-align: left;
+    }
+
+    #videoQuizOverlay .options {
+      margin-bottom: 0.7rem;
+    }
+
+    /* ------------------------------
+       CERTIFICADO
+    --------------------------------*/
+    #certificateTemplate {
+      position: fixed;
+      top: -9999px;
+      left: -9999px;
+      width: 800px;
+      padding: 2.5rem;
+      background: #f5f5f5;
+      color: #111;
+      font-family: "Segoe UI", sans-serif;
+      border: 2px solid #111;
+    }
+
+    #certificateTemplate h1 {
+      font-size: 1.8rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    #certificateTemplate h2 {
+      font-size: 1.3rem;
+      margin-bottom: 0.75rem;
+    }
+
+    #certificateTemplate p {
+      margin-bottom: 0.5rem;
+    }
+
+    #certificateTemplate .cert-footer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1.8rem;
+      font-size: 0.9rem;
+    }
+
+    /* ------------------------------
+       METACOGNICIÓN
+    --------------------------------*/
+    .metacognitive-question {
+      margin-bottom: 1rem;
+    }
+
+    .metacognitive-question label {
+      display: block;
+      margin-bottom: 0.35rem;
+    }
+
+    .metacognitive-question textarea {
+      background: rgba(255,255,255,0.9);
+    }
+
+    /* ------------------------------
+       ACCESIBILIDAD
+    --------------------------------*/
+    :focus-visible {
+      outline: 2px solid #111;
+      outline-offset: 2px;
+    }
+
+    .sr-only {
+      border: 0;
+      clip: rect(0 0 0 0);
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      padding: 0;
+      position: absolute;
+      width: 1px;
+    }
+
+    /* ------------------------------
+       RESPONSIVE
+    --------------------------------*/
+    @media (max-width: 960px) {
+      .two-column {
+        grid-template-columns: minmax(0,1fr);
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.35rem;
+      }
+      .header-right {
+        width: 100%;
+      }
+      #floatingMenu {
+        top: auto;
+        bottom: 5rem;
+        right: 50%;
+        transform: translateX(50%);
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 640px) {
+      main {
+        padding: 0.75rem;
+      }
+      .glass-panel {
+        padding: 1.2rem;
+      }
+      .section-title {
+        font-size: 1.3rem;
+      }
+      #chatbotButton {
+        width: 56px;
+        height: 56px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- CABECERA -->
+  <header>
+    <div class="brand" aria-label="Identidad del curso">
+      <div class="brand-logo" aria-hidden="true">
+        <!-- Ícono simple tipo átomo / agua -->
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="18" fill="none" stroke="#555" stroke-width="2"/>
+          <ellipse cx="32" cy="32" rx="24" ry="10" fill="none" stroke="#555" stroke-width="2"/>
+          <ellipse transform="rotate(60 32 32)" cx="32" cy="32" rx="24" ry="10" fill="none" stroke="#555" stroke-width="2"/>
+          <ellipse transform="rotate(120 32 32)" cx="32" cy="32" rx="24" ry="10" fill="none" stroke="#555" stroke-width="2"/>
+          <circle cx="32" cy="32" r="4" fill="#555"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-title">Química de los Alimentos</div>
+        <div class="brand-subtitle">Cápsula: Humedad, métodos y puntos críticos</div>
+      </div>
+    </div>
+    <div class="header-right" aria-label="Progreso del curso">
+      <div class="progress-container" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progreso de las secciones">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <div class="step-indicator" id="stepIndicator">Paso 1 de 9</div>
+    </div>
+  </header>
+
+  <!-- MENÚ FLOTANTE -->
+  <nav id="floatingMenu" class="hidden" aria-label="Navegación rápida por secciones">
+    <button class="menu-button current-section" data-target="section-portada">Portada</button>
+    <button class="menu-button" data-target="section-introduccion">Introducción</button>
+    <button class="menu-button" data-target="section-activacion">Activación</button>
+    <button class="menu-button" data-target="section-desarrollo">Desarrollo</button>
+    <button class="menu-button" data-target="section-formativa">Eval. formativa</button>
+    <button class="menu-button" data-target="section-evaluacion">Evaluación</button>
+    <button class="menu-button" data-target="section-sintesis">Síntesis</button>
+    <button class="menu-button" data-target="section-cierre">Cierre</button>
+  </nav>
+
+  <!-- BOTÓN CHATBOT -->
+  <button id="chatbotButton" type="button" aria-label="Chatbot de ayuda: abrir en ventana nueva">
+    <!-- Cabeza de robot -->
+    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect x="12" y="18" width="40" height="28" rx="8" ry="8"/>
+      <rect x="22" y="12" width="20" height="8" rx="4" ry="4"/>
+      <circle cx="24" cy="32" r="4" fill="#f5f5f5"/>
+      <circle cx="40" cy="32" r="4" fill="#f5f5f5"/>
+      <rect x="26" y="38" width="12" height="3" rx="1.5" ry="1.5" fill="#f5f5f5"/>
+      <rect x="8" y="26" width="4" height="12" rx="2" ry="2"/>
+      <rect x="52" y="26" width="4" height="12" rx="2" ry="2"/>
+    </svg>
+  </button>
+
+  <!-- BOTÓN BORRAR LOCALSTORAGE -->
+  <button id="clearStorageBtn" type="button">Borrar datos guardados</button>
+
+  <!-- PLANTILLA CERTIFICADO (OCULTA) -->
+  <div id="certificateTemplate">
+    <h1>Certificado de Aprobación</h1>
+    <h2>Química de los Alimentos – La Humedad</h2>
+    <p id="certStudentName"></p>
+    <p id="certStudentEmail"></p>
+    <p id="certStudentRut"></p>
+    <p id="certResult"></p>
+    <p>
+      Este certificado acredita que la persona indicada ha completado y aprobado la cápsula educativa
+      sobre contenido de humedad en alimentos, sus métodos de determinación y puntos críticos de control
+      en el contexto del aseguramiento de la calidad.
+    </p>
+    <div class="cert-footer">
+      <div>
+        <strong>Fecha de emisión:</strong>
+        <span id="certDate"></span>
+      </div>
+      <div>
+        <strong>Docente / Tutor:</strong>
+        <span>______________________</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main>
+    <!-- 1. FORMULARIO DE INGRESO -->
+    <section id="section-ingreso" class="section active" aria-labelledby="ingreso-title">
+      <div class="glass-panel stack-lg">
+        <div>
+          <h2 id="ingreso-title" class="section-title">Ingreso a la cápsula</h2>
+          <p class="section-subtitle">
+            Completa tus datos para personalizar tu experiencia y generar el certificado de aprobación al finalizar.
+          </p>
+          <p class="muted">
+            La información registrada se utiliza exclusivamente con fines académicos y para la generación del certificado.
+            Los campos marcados con * son obligatorios.
+          </p>
+        </div>
+
+        <form id="userForm" novalidate aria-describedby="formHelp">
+          <p id="formHelp" class="muted">
+            Estos datos se almacenarán localmente en tu navegador (localStorage) y se mostrarán en tu certificado final.
+          </p>
+
+          <div class="input-group">
+            <label for="fullName">Nombre completo *</label>
+            <input type="text" id="fullName" name="fullName" autocomplete="name" required aria-required="true" />
+            <span class="error-message" id="error-fullName" aria-live="polite"></span>
+          </div>
+
+          <div class="input-group">
+            <label for="email">Correo electrónico institucional *</label>
+            <input type="email" id="email" name="email" autocomplete="email" required aria-required="true" />
+            <span class="error-message" id="error-email" aria-live="polite"></span>
+          </div>
+
+          <div class="input-group">
+            <label for="rut">RUT (opcional)</label>
+            <input type="text" id="rut" name="rut" placeholder="Ej.: 12.345.678-9" />
+            <span class="error-message" id="error-rut" aria-live="polite"></span>
+          </div>
+
+          <div class="button-row">
+            <button type="submit" class="btn">Ingresar a la cápsula</button>
+            <button type="button" id="skipToPortada" class="btn-secondary btn btn-small">
+              Continuar usando datos guardados
+            </button>
+          </div>
+
+          <p id="formSuccess" class="success-message" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- 2. PORTADA -->
+    <section id="section-portada" class="section" aria-labelledby="portada-title">
+      <div class="glass-panel stack-lg">
+        <div class="two-column">
+          <div class="stack">
+            <div class="pill">
+              <span>📚</span>
+              <span>Química de los Alimentos · Módulo: Humedad</span>
+            </div>
+            <h2 id="portada-title" class="section-title">
+              La humedad en los alimentos: del laboratorio a la decisión tecnológica
+            </h2>
+            <p>
+              Esta cápsula educativa te guía paso a paso por el concepto de contenido de humedad, sus métodos de
+              determinación y los puntos críticos que condicionan la calidad, la vida útil y la seguridad microbiológica
+              de los alimentos. Integramos herramientas digitales, actividades interactivas y reflexión metacognitiva
+              para favorecer un aprendizaje profundo y aplicado al contexto real de control de calidad.
+            </p>
+            <p>
+              A lo largo del recorrido combinarás recursos de <strong>video instruccional</strong>, actividades
+              interactivas en línea, <strong>evaluaciones formativas</strong> y un <strong>test final</strong> que dará
+              origen a tu certificado personal de aprobación.
+            </p>
+            <div class="button-row">
+              <button type="button" class="btn" data-next-section="section-introduccion">
+                Comenzar cápsula
+              </button>
+              <button type="button" class="btn btn-secondary btn-small" data-next-section="section-desarrollo">
+                Ir directo al video central
+              </button>
+            </div>
+          </div>
+          <div>
+            <div class="image-frame">
+              <!-- Se puede reemplazar por una imagen específica de laboratorio de alimentos -->
+              <img src="https://veterinaria.uach.cl/wp-content/uploads/2016/11/IMG_6358-1.jpg"
+                   alt="Representación de un laboratorio de análisis de humedad en alimentos con equipamiento de ingeniería" />
+            </div>
+            <p class="image-caption">
+              Laboratorio de análisis gravimétrico de humedad: balanza analítica, estufa y desecador como protagonistas.
+            </p>
+          </div>
+        </div>
+
+        <div class="callout callout-strong">
+          <strong>Antes de avanzar:</strong> verifica que tus datos personales en el formulario de ingreso sean correctos.
+          Esa información se utilizará automáticamente en tu certificado y en el reporte de resultados para el docente.
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. INTRODUCCIÓN -->
+    <section id="section-introduccion" class="section" aria-labelledby="intro-title">
+      <div class="glass-panel stack-lg">
+        <div class="two-column">
+          <div class="stack">
+            <h2 id="intro-title" class="section-title">Introducción a la humedad en los alimentos</h2>
+            <p>
+              En esta clase magistral trabajaremos la humedad como eje crítico del control de calidad de alimentos.
+              Partiremos por precisar qué entendemos por <strong>contenido de humedad</strong> y cómo se distribuye el
+              agua en distintas matrices alimentarias (cereales, carnes, lácteos, productos deshidratados y formulaciones
+              ricas en azúcar o grasa). Diferenciaremos entre <strong>agua libre</strong> y <strong>agua ligada</strong>,
+              y discutiremos cómo esta estructura condiciona la textura, la estabilidad microbiológica, la vida útil y el
+              cumplimiento normativo de un producto.
+            </p>
+            <p>
+              Luego nos centraremos en la determinación de humedad por métodos gravimétricos, con énfasis en el
+              <strong>método de secado en estufa</strong> como referencia estándar, y en el uso de analizadores rápidos
+              (secado por infrarrojo) y la titulación <em>Karl Fischer</em> para productos de muy baja humedad. Para cada
+              enfoque revisaremos el principio de funcionamiento, el equipamiento requerido, la preparación y pesada de
+              la muestra, las etapas de secado y enfriamiento, y el cálculo del porcentaje final de humedad.
+            </p>
+            <p>
+              Un foco central estará en los <strong>puntos críticos del procedimiento</strong>: representatividad y
+              homogenización de la muestra, tamaño de partícula, temperatura y tiempo de secado, uso correcto del
+              desecador y manipulación en balanza. Analizaremos cómo estos factores, junto con posibles interferencias
+              (azúcares reductores, compuestos volátiles, grasas que se oxidan), pueden introducir errores sistemáticos
+              si no se controlan adecuadamente.
+            </p>
+            <p>
+              Finalmente, interpretaremos críticamente los resultados: relacionaremos el porcentaje de humedad con las
+              especificaciones internas de planta, las normas oficiales y el rotulado nutricional, incorporando
+              criterios de <strong>repetibilidad, control de calidad interno y trazabilidad</strong>. El objetivo es que
+              no solo seas capaz de obtener un número de humedad, sino de valorar su confiabilidad y su impacto en las
+              decisiones tecnológicas concretas.
+            </p>
+          </div>
+          <div class="stack">
+            <div class="image-frame">
+              <img src="https://tomi-digital-resources.storage.googleapis.com/images/classes/resources/rsc-737616-6089e9b8219f7.jpeg"
+                   alt="Diagrama conceptual de curvas de secado y actividad de agua en alimentos" />
+            </div>
+            <p class="image-caption">
+              Relación entre contenido de humedad, actividad de agua y estabilidad del alimento.
+            </p>
+            <div class="callout">
+              <strong>Objetivo de aprendizaje específico:</strong><br />
+              Al finalizar esta clase, el estudiante será capaz de explicar el rol del agua en diferentes matrices
+              alimentarias y de aplicar, de manera fundamentada, al menos un método estándar de determinación de humedad,
+              identificando y controlando los principales puntos críticos del procedimiento analítico para garantizar
+              resultados válidos en el contexto del control de calidad de alimentos.
+            </div>
+            <div>
+              <span class="tag">Contenido de humedad</span>
+              <span class="tag">Actividad de agua</span>
+              <span class="tag">Secado en estufa</span>
+              <span class="tag">Control de calidad</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. ACTIVACIÓN -->
+    <section id="section-activacion" class="section" aria-labelledby="activacion-title">
+      <div class="glass-panel stack-lg">
+        <div>
+          <h2 id="activacion-title" class="section-title">Activación de conocimientos previos</h2>
+          <p class="section-subtitle">
+            Antes de profundizar en el método gravimétrico de determinación de humedad, revisa tus ideas previas sobre
+            el tema mediante la siguiente actividad interactiva.
+          </p>
+        </div>
+        <div class="callout">
+          <strong>Instrucciones:</strong> Lee atentamente cada afirmación y contesta
+          <strong>SI</strong> o <strong>NO</strong> según consideres verdadero o falso el enunciado. Al finalizar,
+          vuelve a esta cápsula para continuar con la sección de desarrollo.
+        </div>
+        <div class="flex-center">
+          <div class="image-frame" style="max-width:1024px; width:100%;">
+            <iframe allow="fullscreen; autoplay;" allowfullscreen width="1024" height="768" frameborder="0"
+                    src="https://es.educaplay.com/juego/26967443-humedad_en_alimentos_verdadero_o_falso.html"
+                    title="Juego verdadero/falso sobre humedad en alimentos"></iframe>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button type="button" class="btn-secondary btn btn-small" data-next-section="section-desarrollo">
+            Ir al desarrollo
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. DESARROLLO -->
+    <section id="section-desarrollo" class="section" aria-labelledby="desarrollo-title">
+      <div class="glass-panel stack-lg">
+        <div>
+          <h2 id="desarrollo-title" class="section-title">Desarrollo: video central y análisis aplicado</h2>
+          <p class="section-subtitle">
+            En el video central se presenta, de manera estructurada, el concepto de humedad en alimentos, sus métodos de
+            determinación y los principales puntos críticos del procedimiento analítico.
+          </p>
+        </div>
+
+        <div class="stack">
+          <div class="callout callout-strong">
+            <strong>Sugerencia didáctica:</strong> mira el video con atención, tomando nota de:
+            la diferencia entre contenido de humedad y actividad de agua, la secuencia del método de secado en estufa,
+            los puntos críticos que el docente enfatiza y los ejemplos concretos de alimentos utilizados.
+          </div>
+        </div>
+
+        <!-- Video central (iframe Educaplay, que enlaza al video preparado) -->
+        <div class="flex-center">
+          <div class="image-frame" style="max-width:1024px; width:100%;">
+            <iframe allow="fullscreen; autoplay;" allowfullscreen width="1024" height="768" frameborder="0"
+                    src="https://es.educaplay.com/juego/26967682-video.html"
+                    title="Video central sobre determinación de humedad en alimentos"></iframe>
+          </div>
+        </div>
+
+        <!-- Sistema local de video-quiz con pausas programadas (demostrativo, controlado por JavaScript) -->
+        <div class="stack" aria-label="Video-quiz con pausas programadas">
+          <h3 class="section-subtitle" style="font-weight:600;">
+            Video-quiz guiado (simulación local con pausas programadas)
+          </h3>
+          <p class="muted">
+            A continuación se muestra un ejemplo de sistema de <strong>video-quiz</strong> con pausas programadas
+            controlado completamente desde esta cápsula. El docente puede reemplazar la fuente de video por un
+            recurso institucional; el código de la lógica de pausas y preguntas está incluido en el JavaScript.
+          </p>
+          <div class="video-wrapper">
+            <!-- El docente puede cambiar la URL de src por un video institucional compatible con HTML5 -->
+           
+
+            <!-- Overlay de preguntas del video-quiz -->
+            <div id="videoQuizOverlay" role="dialog" aria-modal="true" aria-labelledby="videoQuizQuestionTitle">
+              <div>
+                <h3 id="videoQuizQuestionTitle">Pregunta del video</h3>
+                <p id="videoQuizQuestionText"></p>
+                <div id="videoQuizOptions" class="options" role="radiogroup"></div>
+                <p id="videoQuizFeedback" class="feedback" aria-live="polite"></p>
+                <div class="button-row">
+                  <button type="button" class="btn btn-small" id="videoQuizContinueBtn">
+                    Continuar con el video
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="muted">
+            Las respuestas a estas preguntas se almacenan para integrarse en el reporte descargable que se envía al
+            tutor del curso.
+          </p>
+        </div>
+
+        <div class="button-row">
+          <button type="button" class="btn-secondary btn btn-small" data-next-section="section-formativa">
+            Ir a evaluación formativa
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. EVALUACIÓN FORMATIVA (Educaplay) -->
+    <section id="section-formativa" class="section" aria-labelledby="formativa-title">
+      <div class="glass-panel stack-lg">
+        <div>
+          <h2 id="formativa-title" class="section-title">Evaluación formativa: conceptos clave</h2>
+          <p class="section-subtitle">
+            En esta sección pondrás a prueba, de manera formativa, tu comprensión de los conceptos clave abordados en el
+            video central.
+          </p>
+        </div>
+        <div class="callout">
+          <strong>Instrucciones:</strong> Completa la actividad interactiva y revisa tus errores. El objetivo es
+          identificar qué conceptos todavía requieren refuerzo antes de rendir la evaluación sumativa de la cápsula.
+        </div>
+
+        <div class="flex-center">
+          <div class="image-frame" style="max-width:1024px; width:100%;">
+            <iframe allow="fullscreen; autoplay; allow-top-navigation-by-user-activation"
+                    allowfullscreen width="1024" height="768" frameborder="0"
+                    src="https://es.educaplay.com/juego/26966927-humedad_en_los_alimentos_conceptos_clave.html"
+                    title="Juego de conceptos clave sobre humedad en los alimentos"></iframe>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button type="button" class="btn-secondary btn btn-small" data-next-section="section-evaluacion">
+            Continuar a la evaluación sumativa
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. EVALUACIÓN SUMATIVA -->
+    <section id="section-evaluacion" class="section" aria-labelledby="evaluacion-title">
+      <div class="glass-panel stack-lg">
+        <div>
+          <h2 id="evaluacion-title" class="section-title">Evaluación sumativa: comprobando lo aprendido</h2>
+          <p class="section-subtitle">
+            Responde las siguientes preguntas sobre el contenido trabajado en el video y las actividades previas.
+            Recibirás retroalimentación inmediata y un porcentaje de logro. Si no alcanzas el mínimo establecido,
+            podrás intentarlo nuevamente.
+          </p>
+        </div>
+
+        <div class="callout callout-strong">
+          <strong>Indicaciones generales:</strong>
+          <ul>
+            <li>Lee con calma cada enunciado y selecciona la alternativa que mejor refleje lo explicado en la cápsula.</li>
+            <li>Las preguntas están clasificadas en opción múltiple, verdadero/falso, arrastrar y soltar, y relacionar columnas.</li>
+            <li>Tu calificación y respuestas se incluirán en el reporte HTML que enviarás al tutor del curso.</li>
+          </ul>
+        </div>
+
+        <div class="quiz-container" id="quizContainer">
+          <!-- A. PREGUNTAS DE OPCIÓN MÚLTIPLE -->
+          <!-- P1 -->
+          <div class="question" data-question-id="P1" data-type="mc" data-correct="B">
+            <div class="question-header">
+              <div class="question-title">P1_MC – Rol del agua en distintos alimentos</div>
+              <div class="question-tag">Opción múltiple · Comprensión</div>
+            </div>
+            <div class="question-stem">
+              Al comparar una carne fresca, un cereal de desayuno y un queso maduro, ¿cuál de las siguientes afirmaciones
+              describe mejor el rol del contenido de humedad en su estabilidad y vida útil?
+            </div>
+            <div class="options" role="radiogroup" aria-label="Respuestas para la pregunta P1">
+              <button type="button" class="option-btn" data-value="A">
+                A. Todos tienen un comportamiento similar porque la actividad de agua depende solo de la temperatura de almacenamiento.
+              </button>
+              <button type="button" class="option-btn" data-value="B">
+                B. La carne fresca es más perecible porque tiene alta humedad, mientras que el cereal y el queso maduro son más estables porque poseen menor contenido de agua.
+              </button>
+              <button type="button" class="option-btn" data-value="C">
+                C. El cereal de desayuno es el más perecible porque se almacena a temperatura ambiente, sin importar su humedad.
+              </button>
+              <button type="button" class="option-btn" data-value="D">
+                D. El queso maduro siempre es más perecible que la carne fresca porque contiene proteínas y grasas.
+              </button>
+            </div>
+            <p class="feedback" aria-live="polite"></p>
+          </div>
+
+          <!-- P2 -->
+          <div class="question" data-question-id="P2" data-type="mc" data-correct="C">
+            <div class="question-header">
+              <div class="question-title">P2_MC – Secuencia del método de secado en estufa</div>
+              <div class="question-tag">Opción múltiple · Aplicación</div>
+            </div>
+            <div class="question-stem">
+              ¿Cuál de las siguientes secuencias representa de manera más adecuada el procedimiento estándar de determinación de humedad por secado en estufa?
+            </div>
+            <div class="options" role="radiogroup" aria-label="Respuestas para la pregunta P2">
+              <button type="button" class="option-btn" data-value="A">
+                A. Colocar muestra en cápsula sin tarar, secar en estufa, pesar cápsula y calcular la diferencia.
+              </button>
+              <button type="button" class="option-btn" data-value="B">
+                B. Pesar cápsula húmeda, introducir en estufa, enfriar al ambiente, volver a pesar y registrar la masa de agua.
+              </button>
+              <button type="button" class="option-btn" data-value="C">
+                C. Secar cápsula vacía, enfriar en desecador y tarar; agregar muestra homogenizada y pesar; secar en estufa a temperatura y tiempo definidos; enfriar en desecador; pesar nuevamente y calcular % de humedad.
+              </button>
+              <button type="button" class="option-btn" data-value="D">
+                D. Colocar directamente la muestra en la balanza, registrar la masa y asumir una pérdida de 10 % por evaporación.
+              </button>
+            </div>
+            <p class="feedback" aria-live="polite"></p>
+          </div>
+
+          <!-- P3 -->
+          <div class="question" data-question-id="P3" data-type="mc" data-correct="B">
+            <div class="question-header">
+              <div class="question-title">P3_MC – Error por mala gestión del desecador</div>
+              <div class="question-tag">Opción múltiple · Aplicación</div>
+            </div>
+            <div class="question-stem">
+              En un laboratorio, un analista retira la cápsula de la estufa y la deja varios minutos a temperatura
+              ambiente sobre la mesa antes de introducirla en el desecador. Luego realiza la pesada final. ¿Cuál es la
+              consecuencia más probable de este error en el resultado de humedad?
+            </div>
+            <div class="options" role="radiogroup" aria-label="Respuestas para la pregunta P3">
+              <button type="button" class="option-btn" data-value="A">
+                A. El resultado de humedad será artificialmente más bajo porque la muestra perderá más agua.
+              </button>
+              <button type="button" class="option-btn" data-value="B">
+                B. El resultado de humedad será artificialmente más alto porque la muestra reabsorberá humedad del aire.
+              </button>
+              <button type="button" class="option-btn" data-value="C">
+                C. El resultado de humedad no se verá afectado, ya que la balanza corrige automáticamente las variaciones de humedad ambiental.
+              </button>
+              <button type="button" class="option-btn" data-value="D">
+                D. El error solo afecta la actividad de agua, pero no influye en el contenido de humedad.
+              </button>
+            </div>
+            <p class="feedback" aria-live="polite"></p>
+          </div>
+
+          <!-- B. VERDADERO / FALSO -->
+          <!-- P4 -->
+          <div class="question" data-question-id="P4" data-type="vf" data-correct="V">
+            <div class="question-header">
+              <div class="question-title">P4_VF – Humedad y perecibilidad</div>
+              <div class="question-tag">Verdadero / Falso · Comprensión</div>
+            </div>
+            <div class="question-stem">
+              Un mayor contenido de humedad en un alimento suele asociarse a un mayor riesgo microbiológico y a una vida útil más corta.
+            </div>
+            <div class="vf-options options" role="radiogroup" aria-label="Respuestas verdadero/falso P4">
+              <button type="button" class="option-btn" data-value="V">Verdadero</button>
+              <button type="button" class="option-btn" data-value="F">Falso</button>
+            </div>
+            <p class="feedback" aria-live="polite"></p>
+          </div>
+
+          <!-- P5 -->
+          <div class="question" data-question-id="P5" data-type="vf" data-correct="F">
+            <div class="question-header">
+              <div class="question-title">P5_VF – Aumentar temperatura para acortar el secado</div>
+              <div class="question-tag">Verdadero / Falso · Análisis de procedimiento</div>
+            </div>
+            <div class="question-stem">
+              Aumentar la temperatura de la estufa por encima de lo establecido en el protocolo siempre mejora la
+              precisión del método de determinación de humedad, porque acelera la eliminación del agua.
+            </div>
+            <div class="vf-options options" role="radiogroup" aria-label="Respuestas verdadero/falso P5">
+              <button type="button" class="option-btn" data-value="V">Verdadero</button>
+              <button type="button" class="option-btn" data-value="F">Falso</button>
+            </div>
+            <p class="feedback" aria-live="polite"></p>
+          </div>
+
+          <!-- C. DRAG & DROP -->
+          <!-- P6 -->
+          <div class="question" data-question-id="P6" data-type="dd">
+            <div class="question-header">
+              <div class="question-title">P6_DD – Asociar tipo de alimento con su perfil de humedad</div>
+              <div class="question-tag">Arrastrar y soltar · Comprensión / Aplicación</div>
+            </div>
+            <div class="question-stem">
+              Arrastra cada alimento a la categoría de perfil de humedad que corresponda de acuerdo con su
+              comportamiento típico en cuanto a estabilidad y vida útil.
+            </div>
+            <div class="dragdrop-grid">
+              <div>
+                <p><strong>Elementos a arrastrar:</strong></p>
+                <div class="drag-bank" id="dragBankP6" aria-label="Banco de alimentos para P6">
+                  <div class="drag-item" draggable="true" data-question="P6" data-id="D1">
+                    D1: Carne fresca
+                  </div>
+                  <div class="drag-item" draggable="true" data-question="P6" data-id="D2">
+                    D2: Cereal de desayuno extruido
+                  </div>
+                  <div class="drag-item" draggable="true" data-question="P6" data-id="D3">
+                    D3: Queso crema
+                  </div>
+                  <div class="drag-item" draggable="true" data-question="P6" data-id="D4">
+                    D4: Producto deshidratado (ej.: fruta deshidratada)
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p><strong>Categorías:</strong></p>
+                <div>
+                  <p class="drop-label">Z1: Alta humedad – Alta perecibilidad</p>
+                  <div class="dropzone" data-question="P6" data-zone="Z1"></div>
+                </div>
+                <div>
+                  <p class="drop-label">Z2: Humedad intermedia – Requiere refrigeración</p>
+                  <div class="dropzone" data-question="P6" data-zone="Z2"></div>
+                </div>
+                <div>
+                  <p class="drop-label">Z3: Baja humedad – Alta estabilidad a temperatura ambiente</p>
+                  <div class="dropzone" data-question="P6" data-zone="Z3"></div>
+                </div>
+              </div>
+            </div>
+            <p class="feedback" aria-live="polite"></p>
+          </div>
+
+          <!-- P7 -->
+          <div class="question" data-question-id="P7" data-type="dd">
+            <div class="question-header">
+              <div class="question-title">P7_DD – Puntos críticos del método de estufa</div>
+              <div class="question-tag">Arrastrar y soltar · Aplicación</div>
+            </div>
+            <div class="question-stem">
+              Arrastra cada error o descuido a la fase del procedimiento donde se produce y que debes controlar para
+              asegurar un resultado confiable.
+            </div>
+            <div class="dragdrop-grid">
+              <div>
+                <p><strong>Errores / descuidos:</strong></p>
+                <div class="drag-bank" id="dragBankP7" aria-label="Banco de errores para P7">
+                  <div class="drag-item" draggable="true" data-question="P7" data-id="D1">
+                    D1: Tomar una muestra solo de la superficie del lote, sin homogenización previa.
+                  </div>
+                  <div class="drag-item" draggable="true" data-question="P7" data-id="D2">
+                    D2: Molido insuficiente: partículas grandes mezcladas con finas.
+                  </div>
+                  <div class="drag-item" draggable="true" data-question="P7" data-id="D3">
+                    D3: Sacar la cápsula caliente al ambiente antes de entrar al desecador.
+                  </div>
+                  <div class="drag-item" draggable="true" data-question="P7" data-id="D4">
+                    D4: Pesar con prisa, sin esperar a que la lectura de la balanza se estabilice.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p><strong>Fases del procedimiento:</strong></p>
+                <div>
+                  <p class="drop-label">Z1: Toma y preparación de la muestra</p>
+                  <div class="dropzone" data-question="P7" data-zone="Z1"></div>
+                </div>
+                <div>
+                  <p class="drop-label">Z2: Etapa de secado y enfriamiento</p>
+                  <div class="dropzone" data-question="P7" data-zone="Z2"></div>
+                </div>
+                <div>
+                  <p class="drop-label">Z3: Etapa de pesada en balanza</p>
+                  <div class="dropzone" data-question="P7" data-zone="Z3"></div>
+                </div>
+              </div>
+            </div>
+            <p class="feedback" aria-live="polite"></p>
+          </div>
+
+          <!-- D. MATCHING -->
+          <!-- P8 -->
+          <div class="question" data-question-id="P8" data-type="match">
+            <div class="question-header">
+              <div class="question-title">P8_MATCH – Conceptos clave sobre agua en alimentos</div>
+              <div class="question-tag">Relacionar columnas · Comprensión</div>
+            </div>
+            <div class="question-stem">
+              Relaciona cada concepto con la definición que corresponda. Selecciona la letra adecuada en la columna de la derecha.
+            </div>
+            <div class="stack">
+              <div class="matching-row">
+                <span>1. Contenido de humedad</span>
+                <select aria-label="Respuesta para Contenido de humedad" data-match-question="P8" data-item="1">
+                  <option value="">Selecciona...</option>
+                  <option value="A">A. Fracción de agua que puede moverse con relativa facilidad...</option>
+                  <option value="B">B. Cantidad total de agua presente en el alimento...</option>
+                  <option value="C">C. Fracción de agua fuertemente retenida por la estructura...</option>
+                  <option value="D">D. Medida de la disponibilidad del agua para los microorganismos...</option>
+                </select>
+              </div>
+              <div class="matching-row">
+                <span>2. Agua libre</span>
+                <select aria-label="Respuesta para Agua libre" data-match-question="P8" data-item="2">
+                  <option value="">Selecciona...</option>
+                  <option value="A">A. Fracción de agua que puede moverse con relativa facilidad...</option>
+                  <option value="B">B. Cantidad total de agua presente en el alimento...</option>
+                  <option value="C">C. Fracción de agua fuertemente retenida por la estructura...</option>
+                  <option value="D">D. Medida de la disponibilidad del agua para los microorganismos...</option>
+                </select>
+              </div>
+              <div class="matching-row">
+                <span>3. Agua ligada</span>
+                <select aria-label="Respuesta para Agua ligada" data-match-question="P8" data-item="3">
+                  <option value="">Selecciona...</option>
+                  <option value="A">A. Fracción de agua que puede moverse con relativa facilidad...</option>
+                  <option value="B">B. Cantidad total de agua presente en el alimento...</option>
+                  <option value="C">C. Fracción de agua fuertemente retenida por la estructura...</option>
+                  <option value="D">D. Medida de la disponibilidad del agua para los microorganismos...</option>
+                </select>
+              </div>
+              <div class="matching-row">
+                <span>4. Actividad de agua (aw)</span>
+                <select aria-label="Respuesta para Actividad de agua" data-match-question="P8" data-item="4">
+                  <option value="">Selecciona...</option>
+                  <option value="A">A. Fracción de agua que puede moverse con relativa facilidad...</option>
+                  <option value="B">B. Cantidad total de agua presente en el alimento...</option>
+                  <option value="C">C. Fracción de agua fuertemente retenida por la estructura...</option>
+                  <option value="D">D. Medida de la disponibilidad del agua para los microorganismos...</option>
+                </select>
+              </div>
+            </div>
+            <p class="feedback" aria-live="polite"></p>
+          </div>
+
+          <!-- P9 -->
+          <div class="question" data-question-id="P9" data-type="match">
+            <div class="question-header">
+              <div class="question-title">P9_MATCH – Puntos críticos y consecuencias</div>
+              <div class="question-tag">Relacionar columnas · Aplicación</div>
+            </div>
+            <div class="question-stem">
+              Relaciona cada punto crítico descuidado con la consecuencia típica que puede generar en el resultado de la
+              determinación de humedad.
+            </div>
+            <div class="stack">
+              <div class="matching-row">
+                <span>1. Muestra no representativa del lote</span>
+                <select aria-label="Respuesta para muestra no representativa" data-match-question="P9" data-item="1">
+                  <option value="">Selecciona...</option>
+                  <option value="A">A. Sobreestimación de la pérdida de masa por degradación...</option>
+                  <option value="B">B. Resultado preciso solo para una pequeña fracción del producto...</option>
+                  <option value="C">C. Secado desigual: zonas de la muestra aún con agua...</option>
+                  <option value="D">D. Ganancia de humedad desde el ambiente y sobreestimación...</option>
+                  <option value="E">E. Lecturas inestables y aumento de la incertidumbre...</option>
+                </select>
+              </div>
+              <div class="matching-row">
+                <span>2. Molido inadecuado y partículas muy heterogéneas</span>
+                <select aria-label="Respuesta para molido inadecuado" data-match-question="P9" data-item="2">
+                  <option value="">Selecciona...</option>
+                  <option value="A">A. Sobreestimación de la pérdida de masa por degradación...</option>
+                  <option value="B">B. Resultado preciso solo para una pequeña fracción del producto...</option>
+                  <option value="C">C. Secado desigual: zonas de la muestra aún con agua...</option>
+                  <option value="D">D. Ganancia de humedad desde el ambiente y sobreestimación...</option>
+                  <option value="E">E. Lecturas inestables y aumento de la incertidumbre...</option>
+                </select>
+              </div>
+              <div class="matching-row">
+                <span>3. Temperatura de secado excesivamente alta</span>
+                <select aria-label="Respuesta para temperatura excesiva" data-match-question="P9" data-item="3">
+                  <option value="">Selecciona...</option>
+                  <option value="A">A. Sobreestimación de la pérdida de masa por degradación...</option>
+                  <option value="B">B. Resultado preciso solo para una pequeña fracción del producto...</option>
+                  <option value="C">C. Secado desigual: zonas de la muestra aún con agua...</option>
+                  <option value="D">D. Ganancia de humedad desde el ambiente y sobreestimación...</option>
+                  <option value="E">E. Lecturas inestables y aumento de la incertidumbre...</option>
+                </select>
+              </div>
+              <div class="matching-row">
+                <span>4. Cápsula caliente expuesta al aire antes de entrar al desecador</span>
+                <select aria-label="Respuesta para cápsula caliente al aire" data-match-question="P9" data-item="4">
+                  <option value="">Selecciona...</option>
+                  <option value="A">A. Sobreestimación de la pérdida de masa por degradación...</option>
+                  <option value="B">B. Resultado preciso solo para una pequeña fracción del producto...</option>
+                  <option value="C">C. Secado desigual: zonas de la muestra aún con agua...</option>
+                  <option value="D">D. Ganancia de humedad desde el ambiente y sobreestimación...</option>
+                  <option value="E">E. Lecturas inestables y aumento de la incertidumbre...</option>
+                </select>
+              </div>
+              <div class="matching-row">
+                <span>5. Pesada final realizada sin esperar la estabilidad de la balanza</span>
+                <select aria-label="Respuesta para pesada sin estabilidad" data-match-question="P9" data-item="5">
+                  <option value="">Selecciona...</option>
+                  <option value="A">A. Sobreestimación de la pérdida de masa por degradación...</option>
+                  <option value="B">B. Resultado preciso solo para una pequeña fracción del producto...</option>
+                  <option value="C">C. Secado desigual: zonas de la muestra aún con agua...</option>
+                  <option value="D">D. Ganancia de humedad desde el ambiente y sobreestimación...</option>
+                  <option value="E">E. Lecturas inestables y aumento de la incertidumbre...</option>
+                </select>
+              </div>
+            </div>
+            <p class="feedback" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div class="quiz-summary" id="quizSummary" aria-live="polite">
+          Completa todas las preguntas y luego pulsa <strong>Calcular resultado</strong>.
+        </div>
+
+        <div class="button-row">
+          <button type="button" class="btn" id="gradeQuizBtn">Calcular resultado</button>
+          <button type="button" class="btn-secondary btn btn-small" id="retryQuizBtn">
+            Reintentar evaluación
+          </button>
+          <button type="button" class="btn-secondary btn btn-small" id="generateCertBtn" disabled>
+            Generar certificado (PDF)
+          </button>
+          <button type="button" class="btn-secondary btn btn-small" id="downloadReportBtn">
+            Descargar reporte HTML para el tutor
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. SÍNTESIS -->
+    <section id="section-sintesis" class="section" aria-labelledby="sintesis-title">
+      <div class="glass-panel stack-lg">
+        <div>
+          <h2 id="sintesis-title" class="section-title">Síntesis: ideas clave de la cápsula</h2>
+          <p class="section-subtitle">
+            A modo de cierre conceptual, revisa los mensajes esenciales que deberían guiar tu práctica futura en
+            laboratorios de análisis de alimentos.
+          </p>
+        </div>
+
+        <div class="infographic-grid" aria-label="Infografía de ideas clave">
+          <div class="infographic-card">
+            <svg class="infographic-icon" viewBox="0 0 64 64" aria-hidden="true">
+              <rect x="10" y="10" width="44" height="30" rx="4" ry="4" fill="none" stroke="#111" stroke-width="2"/>
+              <rect x="18" y="20" width="12" height="12" rx="2" ry="2" fill="#111"/>
+              <rect x="34" y="22" width="16" height="3" rx="1.5" ry="1.5" fill="#111"/>
+              <rect x="34" y="28" width="12" height="3" rx="1.5" ry="1.5" fill="#111"/>
+              <rect x="22" y="40" width="20" height="2" rx="1" ry="1" fill="#111"/>
+            </svg>
+            <h3>1. El agua define estabilidad y seguridad</h3>
+            <p>
+              El contenido de humedad y la actividad de agua condicionan la textura, la vida útil, el crecimiento
+              microbiano y el cumplimiento normativo de los alimentos. No es solo “un número”, sino un parámetro de
+              diseño y de control de proceso.
+            </p>
+          </div>
+
+          <div class="infographic-card">
+            <svg class="infographic-icon" viewBox="0 0 64 64" aria-hidden="true">
+              <circle cx="22" cy="22" r="10" fill="none" stroke="#111" stroke-width="2"/>
+              <circle cx="44" cy="42" r="10" fill="none" stroke="#111" stroke-width="2"/>
+              <line x1="30" y1="30" x2="36" y2="36" stroke="#111" stroke-width="2"/>
+              <rect x="14" y="42" width="12" height="4" rx="2" ry="2" fill="#111"/>
+              <rect x="38" y="16" width="12" height="4" rx="2" ry="2" fill="#111"/>
+            </svg>
+            <h3>2. El método gravimétrico requiere rigor</h3>
+            <p>
+              La determinación por secado en estufa exige controlar la masa de la cápsula, la homogenización de la
+              muestra, el tamaño de partícula, la temperatura y el tiempo de secado, además del uso correcto del
+              desecador y de la balanza.
+            </p>
+          </div>
+
+          <div class="infographic-card">
+            <svg class="infographic-icon" viewBox="0 0 64 64" aria-hidden="true">
+              <rect x="12" y="14" width="40" height="24" rx="4" ry="4" fill="none" stroke="#111" stroke-width="2"/>
+              <rect x="20" y="42" width="24" height="6" rx="3" ry="3" fill="#111"/>
+              <circle cx="24" cy="24" r="4" fill="#111"/>
+              <circle cx="40" cy="24" r="4" fill="#111"/>
+            </svg>
+            <h3>3. Los puntos críticos definen la confiabilidad</h3>
+            <p>
+              Errores en la toma de muestra, en el molido, en la gestión del desecador o en la pesada final pueden
+              sobrestimar o subestimar la humedad. Identificar y documentar estos puntos críticos es parte del
+              aseguramiento de la calidad.
+            </p>
+          </div>
+
+          <div class="infographic-card">
+            <svg class="infographic-icon" viewBox="0 0 64 64" aria-hidden="true">
+              <rect x="10" y="12" width="44" height="32" rx="4" ry="4" fill="none" stroke="#111" stroke-width="2"/>
+              <polyline points="18,34 26,26 34,30 46,18" fill="none" stroke="#111" stroke-width="2"/>
+              <circle cx="18" cy="34" r="2" fill="#111"/>
+              <circle cx="26" cy="26" r="2" fill="#111"/>
+              <circle cx="34" cy="30" r="2" fill="#111"/>
+              <circle cx="46" cy="18" r="2" fill="#111"/>
+            </svg>
+            <h3>4. Interpretar resultados es tan importante como medir</h3>
+            <p>
+              La comparación con especificaciones de planta, normas de producto y etiquetas nutricionales requiere
+              criterios de repetibilidad, uso de patrones de control y registro sistemático de datos.
+            </p>
+          </div>
+        </div>
+
+        <div class="callout">
+          <strong>Escucha el podcast de cierre:</strong> refuerza las ideas clave y vincula la determinación de humedad
+          con otras decisiones tecnológicas en la industria de alimentos.
+        </div>
+
+        <div class="flex-center">
+          <audio controls aria-label="Podcast de síntesis sobre humedad en alimentos">
+            <source src="https://files.catbox.moe/ux5frq.m4a" type="audio/mp4" />
+            Tu navegador no soporta la reproducción de audio.
+          </audio>
+        </div>
+
+        <div class="button-row">
+          <button type="button" class="btn-secondary btn btn-small" data-next-section="section-cierre">
+            Ir al cierre y reflexión metacognitiva
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. CIERRE Y METACOGNICIÓN -->
+    <section id="section-cierre" class="section" aria-labelledby="cierre-title">
+      <div class="glass-panel stack-lg">
+        <div>
+          <h2 id="cierre-title" class="section-title">Cierre y preguntas metacognitivas</h2>
+          <p class="section-subtitle">
+            Para consolidar un aprendizaje profundo, responde las siguientes preguntas reflexivas. Tus respuestas se
+            incluirán en el reporte HTML que enviarás al tutor.
+          </p>
+        </div>
+
+        <div id="metacognitiveContainer" class="stack-lg">
+          <div class="metacognitive-question">
+            <label for="meta1">
+              ¿Qué paso del procedimiento de secado en estufa consideras más sensible a errores en un laboratorio técnico
+              (pesada, homogenización, manejo del desecador, temperatura/tiempo) y cómo describirías su impacto directo en
+              el resultado final de humedad?
+            </label>
+            <textarea id="meta1" name="meta1"></textarea>
+          </div>
+          <div class="metacognitive-question">
+            <label for="meta2">
+              Si mañana tuvieras que realizar este análisis en un laboratorio de control de calidad, ¿qué verificarías
+              antes de empezar y qué controles aplicarías durante y después del secado para asegurarte de obtener un
+              resultado correcto?
+            </label>
+            <textarea id="meta2" name="meta2"></textarea>
+          </div>
+          <div class="metacognitive-question">
+            <label for="meta3">
+              Luego de revisar el método de deshidratación de alimentos y su importancia, ¿cómo explicarías la relación
+              entre el porcentaje de humedad de un alimento y su impacto en la calidad, vida útil y seguridad
+              microbiológica?
+            </label>
+            <textarea id="meta3" name="meta3"></textarea>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button type="button" class="btn-secondary btn btn-small" id="saveMetacognitiveBtn">
+            Guardar respuestas metacognitivas
+          </button>
+          <button type="button" class="btn-secondary btn btn-small" id="downloadReportFromCierreBtn">
+            Descargar reporte HTML (quiz + video-quiz + reflexión)
+          </button>
+        </div>
+
+        <div class="callout">
+          <strong>Recordatorio:</strong> el reporte HTML descargado incluye tus resultados del video-quiz, la evaluación
+          sumativa y las respuestas a estas preguntas de reflexión. El archivo está protegido por una contraseña de
+          acceso (1234) destinada exclusivamente al profesor o tutor del curso.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- SCRIPTS -->
+  <script>
+    // ----------------------------------------------------
+    // ESTADO GLOBAL
+    // ----------------------------------------------------
+    const sectionOrder = [
+      "section-portada",
+      "section-introduccion",
+      "section-activacion",
+      "section-desarrollo",
+      "section-formativa",
+      "section-evaluacion",
+      "section-sintesis",
+      "section-cierre"
+    ];
+
+    let currentSectionId = "section-ingreso";
+    const quizState = {};
+    const videoQuizState = {
+      responses: []
+    };
+    const metacognitiveState = {
+      meta1: "",
+      meta2: "",
+      meta3: ""
+    };
+    const passThreshold = 0.7; // 70%
+
+    // ----------------------------------------------------
+    // INICIALIZACIÓN
+    // ----------------------------------------------------
+    document.addEventListener("DOMContentLoaded", () => {
+      initNavigation();
+      initForm();
+      initButtonsNext();
+      initChatbot();
+      initClearStorage();
+      initOptionButtons();
+      initDragAndDrop();
+      initMatching();
+      initQuizGrading();
+      initVideoQuiz();
+      initMetacognitive();
+      restoreFromLocalStorage();
+      updateProgressUI();
+    });
+
+    // ----------------------------------------------------
+    // NAVEGACIÓN ENTRE SECCIONES
+    // ----------------------------------------------------
+    function showSection(id) {
+      const sections = document.querySelectorAll(".section");
+      sections.forEach(sec => {
+        sec.classList.toggle("active", sec.id === id);
+      });
+
+      currentSectionId = id;
+
+      const floatingMenu = document.getElementById("floatingMenu");
+      if (id === "section-ingreso") {
+        floatingMenu.classList.add("hidden");
+      } else {
+        floatingMenu.classList.remove("hidden");
+      }
+
+      // Actualizar botones del menú flotante
+      const menuButtons = document.querySelectorAll(".menu-button");
+      menuButtons.forEach(btn => {
+        btn.classList.toggle("current-section", btn.dataset.target === id);
+      });
+
+      updateProgressUI();
+    }
+
+    function initNavigation() {
+      const menuButtons = document.querySelectorAll(".menu-button");
+      menuButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const target = btn.getAttribute("data-target");
+          if (target) {
+            showSection(target);
+          }
+        });
+      });
+    }
+
+    function initButtonsNext() {
+      const buttons = document.querySelectorAll("[data-next-section]");
+      buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const target = btn.getAttribute("data-next-section");
+          if (target) {
+            showSection(target);
+          }
+        });
+      });
+
+      const skipBtn = document.getElementById("skipToPortada");
+      skipBtn.addEventListener("click", () => {
+        const name = localStorage.getItem("qa_fullName");
+        const email = localStorage.getItem("qa_email");
+        if (name && email) {
+          showSection("section-portada");
+        } else {
+          const msg = document.getElementById("formSuccess");
+          msg.textContent = "No hay datos previos almacenados. Por favor completa el formulario.";
+          msg.classList.remove("success-message");
+          msg.classList.add("error-message");
+        }
+      });
+    }
+
+    function updateProgressUI() {
+      const progressBar = document.getElementById("progressBar");
+      const stepIndicator = document.getElementById("stepIndicator");
+
+      let indexInFlow = -1;
+      if (currentSectionId === "section-ingreso") {
+        indexInFlow = 0;
+      } else {
+        indexInFlow = sectionOrder.indexOf(currentSectionId) + 1;
+      }
+
+      const totalSteps = sectionOrder.length + 1; // incluye ingreso
+      const percent = (indexInFlow / totalSteps) * 100;
+      progressBar.style.width = percent + "%";
+      const progressContainer = document.querySelector(".progress-container");
+      progressContainer.setAttribute("aria-valuenow", Math.round(percent));
+
+      stepIndicator.textContent = `Paso ${indexInFlow + 1} de ${totalSteps + 0}`;
+    }
+
+    // ----------------------------------------------------
+    // FORMULARIO DE INGRESO
+    // ----------------------------------------------------
+    function initForm() {
+      const form = document.getElementById("userForm");
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const fullName = document.getElementById("fullName");
+        const email = document.getElementById("email");
+        const rut = document.getElementById("rut");
+
+        let isValid = true;
+
+        clearFieldError(fullName, "error-fullName");
+        clearFieldError(email, "error-email");
+        clearFieldError(rut, "error-rut");
+
+        if (!fullName.value.trim()) {
+          setFieldError(fullName, "error-fullName", "Por favor ingresa tu nombre completo.");
+          isValid = false;
+        }
+
+        if (!email.value.trim()) {
+          setFieldError(email, "error-email", "Por favor ingresa tu correo electrónico.");
+          isValid = false;
+        } else if (!validateEmail(email.value.trim())) {
+          setFieldError(email, "error-email", "El formato del correo no parece válido.");
+          isValid = false;
+        }
+
+        if (rut.value && rut.value.trim().length < 7) {
+          setFieldError(rut, "error-rut", "El RUT ingresado parece incompleto. Verifica el dato.");
+          isValid = false;
+        }
+
+        const formSuccess = document.getElementById("formSuccess");
+        formSuccess.textContent = "";
+        formSuccess.classList.remove("error-message");
+
+        if (!isValid) {
+          formSuccess.textContent = "Revisa los campos marcados en rojo antes de continuar.";
+          formSuccess.classList.add("error-message");
+          return;
+        }
+
+        // Almacenar en localStorage
+        localStorage.setItem("qa_fullName", fullName.value.trim());
+        localStorage.setItem("qa_email", email.value.trim());
+        localStorage.setItem("qa_rut", rut.value.trim());
+
+        formSuccess.textContent = "Datos guardados correctamente. Puedes avanzar a la cápsula.";
+        formSuccess.classList.remove("error-message");
+        formSuccess.classList.add("success-message");
+
+        showSection("section-portada");
+      });
+    }
+
+    function setFieldError(input, errorId, message) {
+      input.classList.add("error");
+      const errorSpan = document.getElementById(errorId);
+      if (errorSpan) {
+        errorSpan.textContent = message;
+      }
+    }
+
+    function clearFieldError(input, errorId) {
+      input.classList.remove("error");
+      const errorSpan = document.getElementById(errorId);
+      if (errorSpan) {
+        errorSpan.textContent = "";
+      }
+    }
+
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(String(email).toLowerCase());
+    }
+
+    function restoreFromLocalStorage() {
+      const name = localStorage.getItem("qa_fullName");
+      const email = localStorage.getItem("qa_email");
+      const rut = localStorage.getItem("qa_rut");
+
+      if (name) document.getElementById("fullName").value = name;
+      if (email) document.getElementById("email").value = email;
+      if (rut) document.getElementById("rut").value = rut;
+
+      const meta1 = localStorage.getItem("qa_meta1");
+      const meta2 = localStorage.getItem("qa_meta2");
+      const meta3 = localStorage.getItem("qa_meta3");
+      if (meta1) document.getElementById("meta1").value = meta1;
+      if (meta2) document.getElementById("meta2").value = meta2;
+      if (meta3) document.getElementById("meta3").value = meta3;
+    }
+
+    // ----------------------------------------------------
+    // CHATBOT Y BORRADO DE DATOS
+    // ----------------------------------------------------
+    function initChatbot() {
+      const btn = document.getElementById("chatbotButton");
+      btn.addEventListener("click", () => {
+        window.open(
+          "https://notebooklm.google.com/notebook/2eb1ab4c-3c28-4472-903d-2701c31132f1",
+          "chatbotAyuda",
+          "width=1024,height=768,noopener,noreferrer"
+        );
+      });
+    }
+
+    function initClearStorage() {
+      const btn = document.getElementById("clearStorageBtn");
+      btn.addEventListener("click", () => {
+        if (confirm("Se eliminarán los datos almacenados localmente (incluyendo respuestas). ¿Deseas continuar?")) {
+          localStorage.clear();
+          location.reload();
+        }
+      });
+    }
+
+    // ----------------------------------------------------
+    // BOTONES DE OPCIÓN (MC Y VF)
+    // ----------------------------------------------------
+    function initOptionButtons() {
+      const optionButtons = document.querySelectorAll(".option-btn");
+      optionButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const questionDiv = btn.closest(".question");
+          const questionId = questionDiv.dataset.questionId;
+          const type = questionDiv.dataset.type;
+
+          const siblings = questionDiv.querySelectorAll(".option-btn");
+          siblings.forEach(sib => sib.classList.remove("selected"));
+          btn.classList.add("selected");
+
+          if (!quizState[questionId]) {
+            quizState[questionId] = {};
+          }
+          quizState[questionId].selected = btn.dataset.value;
+          quizState[questionId].type = type;
+        });
+      });
+    }
+
+    // ----------------------------------------------------
+    // DRAG & DROP (P6 Y P7)
+    // ----------------------------------------------------
+    function initDragAndDrop() {
+      let draggedElement = null;
+
+      document.addEventListener("dragstart", (event) => {
+        const target = event.target;
+        if (target.classList.contains("drag-item")) {
+          draggedElement = target;
+          event.dataTransfer.effectAllowed = "move";
+          event.dataTransfer.setData("text/plain", target.dataset.id);
+        }
+      });
+
+      document.addEventListener("dragover", (event) => {
+        if (event.target.classList.contains("dropzone") || event.target.classList.contains("drag-bank")) {
+          event.preventDefault();
+          event.dataTransfer.dropEffect = "move";
+          event.target.classList.add("dragover");
+        }
+      });
+
+      document.addEventListener("dragleave", (event) => {
+        if (event.target.classList.contains("dropzone") || event.target.classList.contains("drag-bank")) {
+          event.target.classList.remove("dragover");
+        }
+      });
+
+      document.addEventListener("drop", (event) => {
+        if (!draggedElement) return;
+        const target = event.target;
+        if (target.classList.contains("dropzone") || target.classList.contains("drag-bank")) {
+          event.preventDefault();
+          const container = target;
+          container.classList.remove("dragover");
+          container.appendChild(draggedElement);
+
+          const questionId = draggedElement.dataset.question;
+          if (!quizState[questionId]) {
+            quizState[questionId] = {};
+          }
+          quizState[questionId].type = "dd";
+
+          if (!quizState[questionId].mapping) {
+            quizState[questionId].mapping = {};
+          }
+
+          const itemId = draggedElement.dataset.id;
+          const zone = container.classList.contains("dropzone") ? container.dataset.zone : null;
+          if (zone) {
+            quizState[questionId].mapping[itemId] = zone;
+          } else {
+            delete quizState[questionId].mapping[itemId];
+          }
+        }
+      });
+    }
+
+    // ----------------------------------------------------
+    // MATCHING (P8 Y P9)
+    // ----------------------------------------------------
+    function initMatching() {
+      const selects = document.querySelectorAll("select[data-match-question]");
+      selects.forEach(sel => {
+        sel.addEventListener("change", () => {
+          const questionId = sel.dataset.matchQuestion;
+          const item = sel.dataset.item;
+
+          if (!quizState[questionId]) {
+            quizState[questionId] = {};
+          }
+          if (!quizState[questionId].mapping) {
+            quizState[questionId].mapping = {};
+          }
+          quizState[questionId].mapping[item] = sel.value;
+          quizState[questionId].type = "match";
+        });
+      });
+    }
+
+    // ----------------------------------------------------
+    // CALIFICACIÓN DEL QUIZ
+    // ----------------------------------------------------
+    function initQuizGrading() {
+      const gradeBtn = document.getElementById("gradeQuizBtn");
+      const retryBtn = document.getElementById("retryQuizBtn");
+      const generateCertBtn = document.getElementById("generateCertBtn");
+      const downloadReportBtn = document.getElementById("downloadReportBtn");
+      const downloadReportFromCierreBtn = document.getElementById("downloadReportFromCierreBtn");
+
+      gradeBtn.addEventListener("click", () => {
+        const result = gradeQuiz();
+        const summary = document.getElementById("quizSummary");
+        if (result.total === 0) {
+          summary.textContent = "Para calcular el resultado debes responder al menos una pregunta.";
+          summary.classList.remove("pass", "fail");
+          return;
+        }
+        const percent = (result.correct / result.total) * 100;
+        summary.innerHTML = `Has obtenido <strong>${result.correct}</strong> respuestas correctas de <strong>${result.total}</strong> preguntas (<strong>${percent.toFixed(1)} %</strong>).`;
+        if (percent >= passThreshold * 100) {
+          summary.classList.remove("fail");
+          summary.classList.add("pass");
+          summary.innerHTML += " Has alcanzado el mínimo de aprobación de la cápsula.";
+          generateCertBtn.disabled = false;
+          localStorage.setItem("qa_quizPassed", "true");
+        } else {
+          summary.classList.remove("pass");
+          summary.classList.add("fail");
+          summary.innerHTML += " No has alcanzado el mínimo de aprobación. Puedes revisar las retroalimentaciones y reintentar.";
+          generateCertBtn.disabled = true;
+          localStorage.setItem("qa_quizPassed", "false");
+        }
+        // Guardar score para el reporte
+        localStorage.setItem("qa_quizScoreCorrect", String(result.correct));
+        localStorage.setItem("qa_quizScoreTotal", String(result.total));
+      });
+
+      retryBtn.addEventListener("click", () => {
+        resetQuiz();
+      });
+
+      generateCertBtn.addEventListener("click", () => {
+        generateCertificate();
+      });
+
+      downloadReportBtn.addEventListener("click", () => {
+        generateReportHTML();
+      });
+
+      downloadReportFromCierreBtn.addEventListener("click", () => {
+        generateReportHTML();
+      });
+    }
+
+    function gradeQuiz() {
+      const answerKey = {
+        P1: "B",
+        P2: "C",
+        P3: "B",
+        P4: "V",
+        P5: "F",
+        // Drag & drop P6 y P7 tienen llaves específicas
+        P6: {
+          D1: "Z1",
+          D2: "Z3",
+          D3: "Z2",
+          D4: "Z3"
+        },
+        P7: {
+          D1: "Z1",
+          D2: "Z1",
+          D3: "Z2",
+          D4: "Z3"
+        },
+        P8: {
+          "1": "B",
+          "2": "A",
+          "3": "C",
+          "4": "D"
+        },
+        P9: {
+          "1": "B",
+          "2": "C",
+          "3": "A",
+          "4": "D",
+          "5": "E"
+        }
+      };
+
+      let correct = 0;
+      let total = 0;
+
+      // Recorrer preguntas
+      const questions = document.querySelectorAll(".question");
+      questions.forEach(q => {
+        const qId = q.dataset.questionId;
+        const type = q.dataset.type;
+        const feedbackEl = q.querySelector(".feedback");
+        if (!feedbackEl) return;
+
+        let isCorrect = false;
+        let hasAnswer = false;
+
+        if (type === "mc" || type === "vf") {
+          total += 1;
+          const qState = quizState[qId];
+          if (qState && qState.selected) {
+            hasAnswer = true;
+            if (qState.selected === answerKey[qId]) {
+              isCorrect = true;
+              correct += 1;
+              feedbackEl.textContent = (qId === "P1")
+                ? "Correcto. La carne fresca presenta alta humedad y mayor riesgo microbiológico. Cereal y queso maduro son más estables por su menor contenido de agua."
+                : (qId === "P2")
+                ? "Correcto. El método gravimétrico estándar exige secar y tarar la cápsula, pesar cápsula + muestra homogenizada, secar en estufa y enfriar en desecador antes de la pesada final."
+                : (qId === "P3")
+                ? "Correcto. Al enfriar la cápsula caliente al ambiente, la muestra puede reabsorber agua del aire, sobrestimando el porcentaje de humedad."
+                : (qId === "P4")
+                ? "Correcto. Un alto contenido de humedad aumenta la disponibilidad de agua para los microorganismos y reduce la vida útil."
+                : "Correcto. Temperaturas excesivas pueden degradar azúcares, oxidar grasas o volatilizar compuestos no acuosos, distorsionando el resultado.";
+              feedbackEl.classList.remove("incorrect");
+              feedbackEl.classList.add("correct");
+            } else {
+              feedbackEl.textContent =
+                (qId === "P1" || qId === "P2" || qId === "P3")
+                  ? "No es correcto. Revisa la relación entre contenido de humedad, estabilidad microbiológica y la secuencia rigurosa del método de estufa."
+                  : (qId === "P4")
+                  ? "Incorrecto. En la mayoría de los alimentos un alto contenido de humedad implica mayor riesgo microbiológico y menor vida útil."
+                  : "No es correcto. Aumentar la temperatura por encima del protocolo no aumenta la precisión; puede generar pérdidas de masa no debidas solo al agua.";
+              feedbackEl.classList.remove("correct");
+              feedbackEl.classList.add("incorrect");
+            }
+          } else {
+            feedbackEl.textContent = "Aún no has seleccionado ninguna alternativa para esta pregunta.";
+            feedbackEl.classList.remove("correct");
+            feedbackEl.classList.add("incorrect");
+          }
+        } else if (type === "dd") {
+          total += 1;
+          const qState = quizState[qId];
+          const key = answerKey[qId];
+          if (qState && qState.mapping) {
+            hasAnswer = true;
+            let allCorrect = true;
+            for (const item in key) {
+              if (key.hasOwnProperty(item)) {
+                if (qState.mapping[item] !== key[item]) {
+                  allCorrect = false;
+                  break;
+                }
+              }
+            }
+            if (allCorrect) {
+              isCorrect = true;
+              correct += 1;
+              feedbackEl.textContent =
+                (qId === "P6")
+                  ? "Correcto. Has ubicado adecuadamente cada alimento según su perfil de humedad y estabilidad típica."
+                  : "Correcto. Has identificado correctamente los puntos críticos en cada etapa del procedimiento.";
+              feedbackEl.classList.remove("incorrect");
+              feedbackEl.classList.add("correct");
+            } else {
+              feedbackEl.textContent =
+                (qId === "P6")
+                  ? "Algunos emparejamientos no son correctos. Revisa qué alimentos tienen mayor contenido de agua y cuáles se diseñan como productos de baja humedad."
+                  : "Hay emparejamientos incorrectos. Piensa en qué etapa ocurre cada descuido: preparación de muestra, secado/enfriamiento o pesada.";
+              feedbackEl.classList.remove("correct");
+              feedbackEl.classList.add("incorrect");
+            }
+          } else {
+            feedbackEl.textContent = "Arrastra los elementos a las categorías correspondientes para completar esta actividad.";
+            feedbackEl.classList.remove("correct");
+            feedbackEl.classList.add("incorrect");
+          }
+        } else if (type === "match") {
+          total += 1;
+          const qState = quizState[qId];
+          const key = answerKey[qId];
+          if (qState && qState.mapping) {
+            hasAnswer = true;
+            let allCorrect = true;
+            for (const item in key) {
+              if (key.hasOwnProperty(item)) {
+                if (qState.mapping[item] !== key[item]) {
+                  allCorrect = false;
+                  break;
+                }
+              }
+            }
+            if (allCorrect) {
+              isCorrect = true;
+              correct += 1;
+              feedbackEl.textContent =
+                (qId === "P8")
+                  ? "Correcto. Diferencias adecuadamente entre contenido de humedad, agua libre, agua ligada y actividad de agua."
+                  : "Correcto. Has vinculado cada descuido con su efecto típico sobre el resultado de humedad.";
+              feedbackEl.classList.remove("incorrect");
+              feedbackEl.classList.add("correct");
+            } else {
+              feedbackEl.textContent =
+                (qId === "P8")
+                  ? "No todas las relaciones son correctas. Recuerda que el contenido de humedad expresa la cantidad total de agua y la actividad de agua su disponibilidad."
+                  : "Algunas relaciones no son correctas. Revisa cómo cada punto crítico impacta la representatividad, el secado uniforme, la reabsorción de humedad y la incertidumbre de la balanza.";
+              feedbackEl.classList.remove("correct");
+              feedbackEl.classList.add("incorrect");
+            }
+          } else {
+            feedbackEl.textContent = "Selecciona una opción para cada concepto antes de calificar.";
+            feedbackEl.classList.remove("correct");
+            feedbackEl.classList.add("incorrect");
+          }
+        }
+
+        if (!hasAnswer && (type === "mc" || type === "vf" || type === "dd" || type === "match")) {
+          // ya contamos total arriba para todos
+        }
+      });
+
+      return { correct, total };
+    }
+
+    function resetQuiz() {
+      // Limpiar estado
+      for (const key in quizState) {
+        if (quizState.hasOwnProperty(key)) {
+          delete quizState[key];
+        }
+      }
+
+      const optionButtons = document.querySelectorAll(".option-btn");
+      optionButtons.forEach(btn => {
+        btn.classList.remove("selected");
+      });
+
+      const feedbacks = document.querySelectorAll(".question .feedback");
+      feedbacks.forEach(fb => {
+        fb.textContent = "";
+        fb.classList.remove("correct", "incorrect");
+      });
+
+      // Drag banks: regresar todos los elementos a su banco
+      ["dragBankP6", "dragBankP7"].forEach(bankId => {
+        const bank = document.getElementById(bankId);
+        const draggables = document.querySelectorAll(`.drag-item[data-question="${bankId.includes("P6") ? "P6" : "P7"}"]`);
+        draggables.forEach(d => {
+          bank.appendChild(d);
+        });
+      });
+
+      // Matching: resetear selects
+      const selects = document.querySelectorAll("select[data-match-question]");
+      selects.forEach(sel => {
+        sel.value = "";
+      });
+
+      const summary = document.getElementById("quizSummary");
+      summary.textContent = "Completa todas las preguntas y luego pulsa Calcular resultado.";
+      summary.classList.remove("pass", "fail");
+
+      const generateCertBtn = document.getElementById("generateCertBtn");
+      generateCertBtn.disabled = true;
+
+      localStorage.removeItem("qa_quizScoreCorrect");
+      localStorage.removeItem("qa_quizScoreTotal");
+      localStorage.setItem("qa_quizPassed", "false");
+    }
+
+    // ----------------------------------------------------
+    // VIDEO-QUIZ CON PAUSAS PROGRAMADAS
+    // ----------------------------------------------------
+    function initVideoQuiz() {
+      const video = document.getElementById("learningVideo");
+      const overlay = document.getElementById("videoQuizOverlay");
+      const questionTitleEl = document.getElementById("videoQuizQuestionTitle");
+      const questionTextEl = document.getElementById("videoQuizQuestionText");
+      const optionsContainer = document.getElementById("videoQuizOptions");
+      const feedbackEl = document.getElementById("videoQuizFeedback");
+      const continueBtn = document.getElementById("videoQuizContinueBtn");
+
+      if (!video) return;
+
+      const videoQuestions = [
+        {
+          id: "VQ1",
+          time: 10,
+          title: "Video-quiz 1 – Agua libre vs agua ligada",
+          text: "En el tramo inicial del video se explica que el agua en los alimentos no se comporta siempre igual. ¿Cuál de las siguientes afirmaciones refleja mejor la diferencia entre agua libre y agua ligada?",
+          options: [
+            { value: "A", text: "Toda el agua presente en el alimento se considera agua libre." },
+            { value: "B", text: "El agua libre es la que está disponible para microorganismos y reacciones; la ligada está retenida por la matriz con menor disponibilidad." },
+            { value: "C", text: "La agua ligada solo existe en alimentos deshidratados." }
+          ],
+          correct: "B"
+        },
+        {
+          id: "VQ2",
+          time: 35,
+          title: "Video-quiz 2 – Representatividad de la muestra",
+          text: "Cuando el docente habla de la preparación de la muestra, ¿qué elemento subraya como esencial para que el resultado de humedad represente al lote completo?",
+          options: [
+            { value: "A", text: "Tomar una porción cualquiera del producto sin mezclar." },
+            { value: "B", text: "Homogenizar y tomar una muestra representativa del lote." },
+            { value: "C", text: "Incrementar al máximo la temperatura de la estufa." }
+          ],
+          correct: "B"
+        },
+        {
+          id: "VQ3",
+          time: 60,
+          title: "Video-quiz 3 – Uso del desecador",
+          text: "Según el video, ¿por qué es crítico introducir la cápsula caliente en el desecador antes de pesar?",
+          options: [
+            { value: "A", text: "Para que la cápsula gane humedad del ambiente y el resultado sea más conservador." },
+            { value: "B", text: "Para evitar que la muestra reabsorba humedad durante el enfriamiento al aire." },
+            { value: "C", text: "Porque la balanza no puede pesar cápsulas frías." }
+          ],
+          correct: "B"
+        }
+      ];
+
+      const shownQuestions = new Set();
+      let activeQuestion = null;
+      let selectedOption = null;
+
+      video.addEventListener("timeupdate", () => {
+        const currentTime = video.currentTime;
+        for (const q of videoQuestions) {
+          if (currentTime >= q.time && !shownQuestions.has(q.id)) {
+            shownQuestions.add(q.id);
+            activeQuestion = q;
+            showVideoQuestion(q);
+            break;
+          }
+        }
+      });
+
+      function showVideoQuestion(question) {
+        video.pause();
+        questionTitleEl.textContent = question.title;
+        questionTextEl.textContent = question.text;
+        feedbackEl.textContent = "";
+        feedbackEl.classList.remove("correct", "incorrect");
+        optionsContainer.innerHTML = "";
+        selectedOption = null;
+
+        question.options.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "option-btn";
+          btn.textContent = opt.value + ". " + opt.text;
+          btn.dataset.value = opt.value;
+          btn.addEventListener("click", () => {
+            selectedOption = opt.value;
+            const siblings = optionsContainer.querySelectorAll(".option-btn");
+            siblings.forEach(s => s.classList.remove("selected"));
+            btn.classList.add("selected");
+          });
+          optionsContainer.appendChild(btn);
+        });
+
+        overlay.classList.add("active");
+      }
+
+      continueBtn.addEventListener("click", () => {
+        if (!activeQuestion) {
+          overlay.classList.remove("active");
+          video.play();
+          return;
+        }
+
+        if (!selectedOption) {
+          feedbackEl.textContent = "Selecciona una alternativa antes de continuar.";
+          feedbackEl.classList.add("incorrect");
+          return;
+        }
+
+        const isCorrect = selectedOption === activeQuestion.correct;
+        if (isCorrect) {
+          feedbackEl.textContent = "Correcto. Estás integrando adecuadamente los conceptos del video.";
+          feedbackEl.classList.remove("incorrect");
+          feedbackEl.classList.add("correct");
+        } else {
+          feedbackEl.textContent = "Respuesta incorrecta. Revisa con atención el tramo del video donde se explica este concepto.";
+          feedbackEl.classList.remove("correct");
+          feedbackEl.classList.add("incorrect");
+        }
+
+        // Guardar en estado global
+        videoQuizState.responses.push({
+          id: activeQuestion.id,
+          title: activeQuestion.title,
+          question: activeQuestion.text,
+          selected: selectedOption,
+          correct: activeQuestion.correct,
+          isCorrect: isCorrect
+        });
+
+        // También almacenar en localStorage (resumen simple)
+        localStorage.setItem("qa_videoQuizResponses", JSON.stringify(videoQuizState.responses));
+
+        // Cerrar overlay tras breve pausa
+        setTimeout(() => {
+          overlay.classList.remove("active");
+          feedbackEl.textContent = "";
+          video.play();
+          activeQuestion = null;
+          selectedOption = null;
+        }, 900);
+      });
+    }
+
+    // ----------------------------------------------------
+    // CERTIFICADO
+    // ----------------------------------------------------
+    function generateCertificate() {
+      const name = localStorage.getItem("qa_fullName") || "Estudiante";
+      const email = localStorage.getItem("qa_email") || "";
+      const rut = localStorage.getItem("qa_rut") || "";
+      const correct = parseInt(localStorage.getItem("qa_quizScoreCorrect") || "0", 10);
+      const total = parseInt(localStorage.getItem("qa_quizScoreTotal") || "0", 10);
+      const percent = total > 0 ? (correct / total) * 100 : 0;
+
+      const nameEl = document.getElementById("certStudentName");
+      const emailEl = document.getElementById("certStudentEmail");
+      const rutEl = document.getElementById("certStudentRut");
+      const resultEl = document.getElementById("certResult");
+      const dateEl = document.getElementById("certDate");
+
+      nameEl.textContent = "Nombre: " + name;
+      emailEl.textContent = "Correo: " + email;
+      rutEl.textContent = rut ? "RUT: " + rut : "";
+      resultEl.textContent =
+        "Resultado en evaluación sumativa: " + correct + " / " + total + " (" + percent.toFixed(1) + " %).";
+
+      const now = new Date();
+      dateEl.textContent = now.toLocaleDateString("es-CL", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      });
+
+      const certContent = document.getElementById("certificateTemplate");
+
+      // Implementación mínima tipo "html2pdf": se abre nueva ventana
+      // para permitir que el usuario elija "Guardar como PDF" desde el diálogo de impresión.
+      const win = window.open("", "_blank", "width=900,height=700");
+      win.document.open();
+      win.document.write("<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'><title>Certificado - Humedad</title>");
+      win.document.write("<style>body{font-family:'Segoe UI',sans-serif;display:flex;justify-content:center;align-items:flex-start;background:#e0e0e0;margin:0;padding:2rem;}#wrapper{background:#f5f5f5;border:2px solid #111;padding:2.5rem;max-width:800px;width:100%;}</style>");
+      win.document.write("</head><body><div id='wrapper'>" + certContent.innerHTML + "</div>");
+      win.document.write("<script>window.onload=function(){window.print();};<\/script>");
+      win.document.write("</body></html>");
+      win.document.close();
+    }
+
+    // ----------------------------------------------------
+    // METACOGNICIÓN
+    // ----------------------------------------------------
+    function initMetacognitive() {
+      const saveBtn = document.getElementById("saveMetacognitiveBtn");
+      const meta1El = document.getElementById("meta1");
+      const meta2El = document.getElementById("meta2");
+      const meta3El = document.getElementById("meta3");
+
+      saveBtn.addEventListener("click", () => {
+        metacognitiveState.meta1 = meta1El.value.trim();
+        metacognitiveState.meta2 = meta2El.value.trim();
+        metacognitiveState.meta3 = meta3El.value.trim();
+
+        localStorage.setItem("qa_meta1", metacognitiveState.meta1);
+        localStorage.setItem("qa_meta2", metacognitiveState.meta2);
+        localStorage.setItem("qa_meta3", metacognitiveState.meta3);
+
+        alert("Respuestas metacognitivas guardadas localmente.");
+      });
+    }
+
+    // ----------------------------------------------------
+    // REPORTE HTML (QUIZ + VIDEO-QUIZ + METACOGNICIÓN)
+    // ----------------------------------------------------
+    function generateReportHTML() {
+      const name = localStorage.getItem("qa_fullName") || "";
+      const email = localStorage.getItem("qa_email") || "";
+      const rut = localStorage.getItem("qa_rut") || "";
+      const quizScoreCorrect = localStorage.getItem("qa_quizScoreCorrect") || "0";
+      const quizScoreTotal = localStorage.getItem("qa_quizScoreTotal") || "0";
+      const quizPassed = localStorage.getItem("qa_quizPassed") === "true";
+      const videoResponses = JSON.parse(localStorage.getItem("qa_videoQuizResponses") || "[]");
+      const meta1 = localStorage.getItem("qa_meta1") || "";
+      const meta2 = localStorage.getItem("qa_meta2") || "";
+      const meta3 = localStorage.getItem("qa_meta3") || "";
+
+      // Extraer respuestas del quiz desde el DOM / quizState
+      const quizResponses = [];
+      const questions = document.querySelectorAll(".question");
+      questions.forEach(q => {
+        const qId = q.dataset.questionId;
+        const type = q.dataset.type;
+        const questionText = q.querySelector(".question-stem") ? q.querySelector(".question-stem").textContent.trim() : "";
+        let selectedText = "";
+        let correctness = "";
+
+        if (type === "mc" || type === "vf") {
+          const selectedBtn = q.querySelector(".option-btn.selected");
+          selectedText = selectedBtn ? selectedBtn.textContent.trim() : "(sin respuesta)";
+          const key = q.dataset.correct;
+          if (quizState[qId] && quizState[qId].selected) {
+            correctness = quizState[qId].selected === key ? "Correcta" : "Incorrecta";
+          } else {
+            correctness = "Sin respuesta";
+          }
+        } else if (type === "dd") {
+          const items = q.querySelectorAll(".drag-item");
+          const mapping = [];
+          items.forEach(item => {
+            const itemId = item.dataset.id;
+            const parent = item.parentElement;
+            let zoneLabel = "Banco (no asignado)";
+            if (parent.classList.contains("dropzone")) {
+              const zoneId = parent.dataset.zone;
+              zoneLabel = "Zona " + zoneId;
+            }
+            mapping.push(itemId + " -> " + zoneLabel);
+          });
+          selectedText = mapping.join("; ");
+          const key = (qId === "P6")
+            ? { D1: "Z1", D2: "Z3", D3: "Z2", D4: "Z3" }
+            : { D1: "Z1", D2: "Z1", D3: "Z2", D4: "Z3" };
+          let allCorrect = true;
+          for (const item in key) {
+            const requiredZone = key[item];
+            const el = q.querySelector(`.drag-item[data-id="${item}"]`);
+            if (el) {
+              const parent = el.parentElement;
+              const zone = parent.classList.contains("dropzone") ? parent.dataset.zone : null;
+              if (zone !== requiredZone) {
+                allCorrect = false;
+                break;
+              }
+            } else {
+              allCorrect = false;
+              break;
+            }
+          }
+          correctness = allCorrect ? "Correcta" : "Incorrecta";
+        } else if (type === "match") {
+          const selects = q.querySelectorAll("select[data-match-question]");
+          const mapping = [];
+          selects.forEach(sel => {
+            const item = sel.dataset.item;
+            const value = sel.value || "(sin selección)";
+            mapping.push(item + " -> " + value);
+          });
+          selectedText = mapping.join("; ");
+          const key = (qId === "P8")
+            ? { "1": "B", "2": "A", "3": "C", "4": "D" }
+            : { "1": "B", "2": "C", "3": "A", "4": "D", "5": "E" };
+          let allCorrect = true;
+          for (const item in key) {
+            if (Object.prototype.hasOwnProperty.call(key, item)) {
+              const expected = key[item];
+              const sel = q.querySelector(`select[data-item="${item}"]`);
+              if (!sel || sel.value !== expected) {
+                allCorrect = false;
+                break;
+              }
+            }
+          }
+          correctness = allCorrect ? "Correcta" : "Incorrecta";
+        }
+
+        quizResponses.push({
+          id: qId,
+          question: questionText,
+          answer: selectedText,
+          result: correctness
+        });
+      });
+
+      const now = new Date();
+      const dateStr = now.toLocaleString("es-CL");
+
+      // HTML del reporte, con protección básica por contraseña
+      const reportHTML =
+        "<!DOCTYPE html>" +
+        "<html lang='es'>" +
+        "<head>" +
+        "<meta charset='UTF-8' />" +
+        "<title>Reporte de resultados - Humedad en alimentos</title>" +
+        "<style>" +
+        "body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:#f0f0f0;margin:0;padding:1.5rem;}" +
+        "#wrapper{max-width:900px;margin:0 auto;background:#ffffff;border-radius:10px;padding:1.5rem;box-shadow:0 14px 30px rgba(0,0,0,0.25);}" +
+        "h1,h2,h3{color:#111;}" +
+        "h1{font-size:1.6rem;margin-bottom:0.5rem;}" +
+        "h2{font-size:1.2rem;margin-top:1.4rem;margin-bottom:0.5rem;border-bottom:1px solid #ddd;padding-bottom:0.25rem;}" +
+        "p{font-size:0.9rem;line-height:1.6;text-align:justify;}" +
+        "table{width:100%;border-collapse:collapse;margin-top:0.5rem;font-size:0.85rem;}" +
+        "th,td{border:1px solid #ccc;padding:0.4rem 0.5rem;vertical-align:top;}" +
+        "th{background:#f5f5f5;text-align:left;}" +
+        ".meta{font-size:0.85rem;color:#444;margin-bottom:0.75rem;}" +
+        ".badge{display:inline-block;padding:0.2rem 0.5rem;border-radius:999px;font-size:0.75rem;margin-left:0.4rem;}" +
+        ".badge-pass{background:#1b5e20;color:#fff;}" +
+        ".badge-fail{background:#b00020;color:#fff;}" +
+        "</style>" +
+        "</head>" +
+        "<body>" +
+        "<div id='wrapper' style='display:none;'>" +
+        "<h1>Reporte de resultados - Cápsula: Química de los Alimentos – La Humedad</h1>" +
+        "<p class='meta'><strong>Fecha y hora de generación:</strong> " + dateStr + "</p>" +
+        "<h2>1. Datos del estudiante</h2>" +
+        "<p><strong>Nombre:</strong> " + (name || "(no registrado)") + "</p>" +
+        "<p><strong>Correo:</strong> " + (email || "(no registrado)") + "</p>" +
+        "<p><strong>RUT:</strong> " + (rut || "(no registrado)") + "</p>" +
+        "<h2>2. Resultado de la evaluación sumativa</h2>" +
+        "<p><strong>Puntaje:</strong> " + quizScoreCorrect + " / " + quizScoreTotal +
+        " (" + (quizScoreTotal !== "0" ? (parseFloat(quizScoreCorrect) / parseFloat(quizScoreTotal) * 100).toFixed(1) : "0.0") + " %)" +
+        (quizPassed ? "<span class='badge badge-pass'>Aprobado</span>" : "<span class='badge badge-fail'>No aprobado</span>") +
+        "</p>" +
+        "<table aria-label='Detalle de respuestas del quiz'>" +
+        "<thead><tr><th>Pregunta</th><th>Respuesta del estudiante</th><th>Resultado</th></tr></thead><tbody>";
+
+      let quizRows = "";
+      quizResponses.forEach(r => {
+        quizRows += "<tr><td>" + escapeHTML(r.id + ": " + r.question) + "</td><td>" + escapeHTML(r.answer) + "</td><td>" + escapeHTML(r.result) + "</td></tr>";
+      });
+
+      const videoRows = videoResponses.map(r => {
+        const label = r.isCorrect ? "Correcta" : "Incorrecta";
+        return "<tr><td>" + escapeHTML(r.id + ": " + r.question) + "</td><td>" + escapeHTML(r.selected) + "</td><td>" + escapeHTML(label) + "</td></tr>";
+      }).join("");
+
+      const reportHTMLComplete =
+        reportHTML +
+        quizRows +
+        "</tbody></table>" +
+        "<h2>3. Resultados del video-quiz con pausas</h2>" +
+        (videoResponses.length === 0
+          ? "<p>No se registran respuestas en el video-quiz.</p>"
+          : "<table aria-label='Detalle de respuestas de video-quiz'><thead><tr><th>Pregunta</th><th>Respuesta del estudiante</th><th>Resultado</th></tr></thead><tbody>" +
+            videoRows + "</tbody></table>") +
+        "<h2>4. Preguntas metacognitivas</h2>" +
+        "<h3>4.1 Paso más sensible a errores</h3><p>" + (meta1 ? escapeHTML(meta1) : "(sin respuesta)") + "</p>" +
+        "<h3>4.2 Controles antes, durante y después del secado</h3><p>" + (meta2 ? escapeHTML(meta2) : "(sin respuesta)") + "</p>" +
+        "<h3>4.3 Relación entre humedad, calidad y seguridad microbiológica</h3><p>" + (meta3 ? escapeHTML(meta3) : "(sin respuesta)") + "</p>" +
+        "<p class='meta'><em>Nota: este reporte se genera automáticamente desde la cápsula web y se recomienda adjuntarlo íntegramente al correo enviado al tutor del curso.</em></p>" +
+        "</div>" +
+        "<script>" +
+        "var pass = prompt('Ingrese la contraseña de acceso al reporte:');" +
+        "if(pass === '1234'){document.getElementById('wrapper').style.display='block';}" +
+        "else{document.body.innerHTML='<p style=\"font-family:Segoe UI,Arial,sans-serif;text-align:center;margin-top:3rem;\">Acceso denegado. Contraseña incorrecta.</p>';}" +
+        "<\/script>" +
+        "</body></html>";
+
+      const blob = new Blob([reportHTMLComplete], { type: "text/html" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "reporte_humedad_alimentos.html";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function escapeHTML(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>
